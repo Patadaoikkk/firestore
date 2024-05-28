@@ -1,7 +1,9 @@
-import { collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-let ediney = { nome: "Ediney" };
+let ediney = { 
+  nome: "Ediney" 
+};
 
 let aluGabriel = {
   nome: "Gabriel",
@@ -26,18 +28,19 @@ let fbAddDocCbFn = (docRef) => {
   console.log("Document written with ID: ", docRef.id);
 }
 
+let fbDb = window.fbDb;
 let fbAddDoc = async (fbDb, jsObj, strCollectionName, fbAddDocCbFn) => {
   try {
-    const docRef = await addDoc(collection(fbDb, strCollectionName), jsObj);
+    const docRef = await addDoc(collection(window.fbDb, strCollectionName), jsObj);
     fbAddDocCbFn(docRef);
   } catch (error) {
     console.log("Erro ao adicionar documento", error);
   }
 }
 
-fbAddDoc(fbDb, ediney, "professores", fbAddDocCbFn);
-fbAddDoc(fbDb, aluGabriel, "alunos", fbAddDocCbFn);
-fbAddDoc(fbDb, curso1, "cursos", fbAddDocCbFn);
+fbAddDoc(window.fbDb, ediney, "professores", fbAddDocCbFn);
+fbAddDoc(window.fbDb, aluGabriel, "alunos", fbAddDocCbFn);
+fbAddDoc(window.fbDb, curso1, "cursos", fbAddDocCbFn);
 
 let fbListDocsCbFn = (doc) => {
   console.log("Document ID:", doc.id);
@@ -46,16 +49,16 @@ let fbListDocsCbFn = (doc) => {
 
 // Função para listar documentos de uma coleção
 let fbListDocs = async (fbDb, collectionName, fbListDocsCbFn) => {
-  const querySnapshot = await getDocs(collection(fbDb, collectionName));
+  const querySnapshot = await getDocs(collection(window.fbDb, collectionName));
   querySnapshot.forEach((doc) => {
     fbListDocsCbFn(doc);
   });
 }
 
 // Listando documentos das coleções
-fbListDocs(fbDb, "professores", fbListDocsCbFn);
-fbListDocs(fbDb, "alunos", fbListDocsCbFn);
-fbListDocs(fbDb, "cursos", fbListDocsCbFn);
+fbListDocs(window.fbDb, "professores", fbListDocsCbFn);
+fbListDocs(window.fbDb, "alunos", fbListDocsCbFn);
+fbListDocs(window.fbDb, "cursos", fbListDocsCbFn);
 
 // Função de callback para listar coleções
 let fbListCollectionsCbFn = (collection) => {
@@ -72,4 +75,4 @@ let fbListCollections = async (fbDb, fbListCollectionsCbFn) => {
 }
 
 // Listando coleções
-fbListCollections(fbDb, fbListCollectionsCbFn);
+fbListCollections(window.fbDb, fbListCollectionsCbFn);
